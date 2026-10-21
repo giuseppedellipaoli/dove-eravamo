@@ -1,0 +1,17 @@
+{
+  "name": "dove-eravamo",
+  "version": "0.1.0",
+  "description": "Resume a local project from its saved checkpoint.",
+  "skills": "./skills/",
+  "requires_local_executor": true,
+  "interface": {
+    "displayName": "Dove eravamo?",
+    "shortDescription": "Resume a project from a clear checkpoint.",
+    "developerName": "Giuseppe Delli Paoli",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ]
+  }
+}

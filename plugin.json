@@ -1,0 +1,26 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dove-eravamo",
+  "version": "0.1.0",
+  "description": "Pick up a project from a small, source-linked checkpoint instead of rereading its whole history.",
+  "extensions": {
+    "com.openai": {
+      "requires_local_executor": true,
+      "interface": {
+        "displayName": "Dove eravamo?",
+        "shortDescription": "Resume a project from a clear, verifiable checkpoint.",
+        "developerName": "Giuseppe Delli Paoli",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Where were we with this project?",
+          "Dove eravamo con questo progetto?"
+        ],
+        "websiteURL": "https://github.com/giuseppedellipaoli/dove-eravamo"
+      }
+    }
+  }
+}

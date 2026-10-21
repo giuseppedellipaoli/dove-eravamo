@@ -1,0 +1,4 @@
+interface:
+  display_name: "Dove eravamo?"
+  short_description: "Resume local work from a clear project checkpoint."
+  default_prompt: "Use $dove-eravamo to find where we left this project and the next useful step."

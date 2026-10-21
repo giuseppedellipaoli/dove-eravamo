@@ -1,0 +1,26 @@
+{
+  "name": "dove-eravamo",
+  "version": "0.1.0",
+  "description": "A tiny checkpoint reader and Codex skill for resuming local projects.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/project-context.test.mjs",
+    "demo": "node skills/dove-eravamo/scripts/project-context.mjs start --root examples/tiny-project"
+  },
+  "bin": {
+    "dove-eravamo": "skills/dove-eravamo/scripts/project-context.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giuseppedellipaoli/dove-eravamo.git"
+  },
+  "homepage": "https://github.com/giuseppedellipaoli/dove-eravamo#readme",
+  "author": {
+    "name": "Giuseppe Delli Paoli"
+  }
+}
