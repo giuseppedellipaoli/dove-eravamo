@@ -1,6 +1,6 @@
 {
   "name": "dove-eravamo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A tiny checkpoint reader and Codex skill for resuming local projects.",
   "type": "module",
   "private": true,

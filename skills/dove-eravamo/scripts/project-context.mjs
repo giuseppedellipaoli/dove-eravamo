@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 export const START_MARKER = '<!-- CURRENT_CONTEXT_START -->';
 export const END_MARKER = '<!-- CURRENT_CONTEXT_END -->';
 export const OUTPUT_LIMIT = 32000;
@@ -183,7 +183,7 @@ function gitEnvironment() {
 
 function git(root, args, input) {
   return spawnSync('git', ['--no-optional-locks', '-c', 'core.fsmonitor=false',
-    '-c', 'core.untrackedCache=false', '-C', root, ...args], {
+    '-c', 'core.untrackedCache=false', '-c', 'maintenance.auto=false', '-c', 'gc.auto=0', '-C', root, ...args], {
     encoding: 'utf8', shell: false, windowsHide: true, timeout: 3000, maxBuffer: 128 * 1024,
     env: gitEnvironment(), input,
   });

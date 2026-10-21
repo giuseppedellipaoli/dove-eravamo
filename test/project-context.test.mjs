@@ -275,12 +275,13 @@ test('init accepts a custom destination but never creates missing parent directo
   assert.throws(() => run(['init', '--status', 'missing/Progress.md'], dir));
   assert.deepEqual(snapshot(dir), before);
 });
+// Fixture setup must not leave background Git maintenance racing the read-only snapshots.
 let gitAvailable = false;
 try { gitAvailable = /git version/.test(execFileSync('git', ['--version'], { encoding: 'utf8', windowsHide: true })); } catch {}
 test('start shows local Git facts and preserves all repository files', { skip: !gitAvailable }, t => {
   const { dir, write } = fixture(t);
   const gitEnv = { ...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: process.platform === 'win32' ? 'NUL' : '/dev/null', GIT_OPTIONAL_LOCKS: '0' };
-  const git = (...args) => execFileSync('git', args, { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
+  const git = (...args) => execFileSync('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', ...args], { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
   git('-c', 'init.defaultBranch=main', '-c', 'init.templateDir=', 'init', '--quiet');
   git('add', '--', '.');
   git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid', 'commit', '--quiet', '-m', 'Synthetic initial state');
@@ -311,7 +312,7 @@ test('Git filters never execute during start; unsafe working-tree status is skip
   const emptyGlobalConfig = path.join(dir, 'empty-global.gitconfig');
   write('empty-global.gitconfig', '');
   const gitEnv = { ...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: emptyGlobalConfig, GIT_OPTIONAL_LOCKS: '0' };
-  const git = (...args) => execFileSync('git', args, { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
+  const git = (...args) => execFileSync('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', ...args], { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
   git('-c', 'init.defaultBranch=main', '-c', 'init.templateDir=', 'init', '--quiet');
   write('filter.cjs', "const fs = require('node:fs'); fs.writeFileSync('filter-ran.sentinel', 'filter executed'); process.stdout.write(fs.readFileSync(0));\n");
   write('.gitattributes', '*.filtered filter=sentinel\n');
@@ -352,7 +353,7 @@ test('repository redirect environment cannot expose an unrelated Git working tre
   write('empty-global.gitconfig', '');
   const emptyGlobalConfig = path.join(dir, 'empty-global.gitconfig');
   const gitEnv = { ...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: emptyGlobalConfig, GIT_OPTIONAL_LOCKS: '0' };
-  const foreignGit = (...args) => execFileSync('git', args, { cwd: foreignDir, env: gitEnv, encoding: 'utf8', windowsHide: true });
+  const foreignGit = (...args) => execFileSync('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', ...args], { cwd: foreignDir, env: gitEnv, encoding: 'utf8', windowsHide: true });
   foreignGit('-c', 'init.defaultBranch=foreign-fixture', '-c', 'init.templateDir=', 'init', '--quiet');
   foreignWrite('Foreign-only-sensitive.md', '# Foreign repository\nDo not expose this unrelated project.');
   foreignGit('add', '--', 'Foreign-only-sensitive.md');
@@ -388,7 +389,7 @@ test('unused configured Git filters do not hide ordinary working-tree changes', 
   write('empty-global.gitconfig', '');
   const emptyGlobalConfig = path.join(dir, 'empty-global.gitconfig');
   const gitEnv = { ...process.env, GIT_CONFIG_NOSYSTEM: '1', GIT_CONFIG_GLOBAL: emptyGlobalConfig, GIT_OPTIONAL_LOCKS: '0' };
-  const git = (...args) => execFileSync('git', args, { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
+  const git = (...args) => execFileSync('git', ['-c', 'gc.auto=0', '-c', 'maintenance.auto=false', ...args], { cwd: dir, env: gitEnv, encoding: 'utf8', windowsHide: true });
   git('-c', 'init.defaultBranch=main', '-c', 'init.templateDir=', 'init', '--quiet');
   write('filter.cjs', "const fs = require('node:fs'); fs.writeFileSync('filter-ran.sentinel', 'filter executed'); process.stdout.write(fs.readFileSync(0));\n");
   const nodeExe = process.execPath.replaceAll('\\', '/').replaceAll('"', '\\"');
